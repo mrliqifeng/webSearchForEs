@@ -1,0 +1,28 @@
+
+spring:
+  resources:
+    static-locations: classpath:static/
+  datasource:
+    url: jdbc:mysql://localhost:3306/search?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: "000000"
+    driver-class-name: com.mysql.jdbc.Driver
+mybatis:
+  check-config-location: true
+  mapper-locations: classpath:mappers/*Mapper.xml
+  config-location: classpath:mybatis-config.xml
+server:
+  port: 18081
+my-conf:
+  # ES集群中的IP
+  es-ip: 10.30.10.11
+  # ES暴露的端口
+  es-port: 9200
+  # 是否开启全局排序，0为关闭，1为开启
+  is-sort: 0
+  # 全局排序依赖字段
+  sort-field:
+  # 是否开启全局时间过滤，0为关闭，1为开启
+  is-time-filter: 0
+  # 全局时间过滤依赖字段,目前仅支持long类型的时间戳字段
+  time-filter-field:

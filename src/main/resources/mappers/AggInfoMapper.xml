@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gy.cpcsearch.mapper.AggInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.gy.cpcsearch.entity.AggInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="a_table" property="aTable" jdbcType="VARCHAR" />
+    <result column="a_field" property="aField" jdbcType="VARCHAR" />
+    <result column="a_alias" property="aAlias" jdbcType="VARCHAR" />
+    <result column="a_length" property="aLength" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, a_table, a_field, a_alias, a_length
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from agg_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from agg_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.gy.cpcsearch.entity.AggInfo" >
+    insert into agg_info (id, a_table, a_field, 
+      a_alias, a_length)
+    values (#{id,jdbcType=INTEGER}, #{aTable,jdbcType=VARCHAR}, #{aField,jdbcType=VARCHAR}, 
+      #{aAlias,jdbcType=VARCHAR}, #{aLength,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gy.cpcsearch.entity.AggInfo" >
+    insert into agg_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="aTable != null" >
+        a_table,
+      </if>
+      <if test="aField != null" >
+        a_field,
+      </if>
+      <if test="aAlias != null" >
+        a_alias,
+      </if>
+      <if test="aLength != null" >
+        a_length,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="aTable != null" >
+        #{aTable,jdbcType=VARCHAR},
+      </if>
+      <if test="aField != null" >
+        #{aField,jdbcType=VARCHAR},
+      </if>
+      <if test="aAlias != null" >
+        #{aAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="aLength != null" >
+        #{aLength,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gy.cpcsearch.entity.AggInfo" >
+    update agg_info
+    <set >
+      <if test="aTable != null" >
+        a_table = #{aTable,jdbcType=VARCHAR},
+      </if>
+      <if test="aField != null" >
+        a_field = #{aField,jdbcType=VARCHAR},
+      </if>
+      <if test="aAlias != null" >
+        a_alias = #{aAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="aLength != null" >
+        a_length = #{aLength,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gy.cpcsearch.entity.AggInfo" >
+    update agg_info
+    set a_table = #{aTable,jdbcType=VARCHAR},
+      a_field = #{aField,jdbcType=VARCHAR},
+      a_alias = #{aAlias,jdbcType=VARCHAR},
+      a_length = #{aLength,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getFieldByTableAndAlias" resultType="com.gy.cpcsearch.entity.AggInfo">
+    select * from agg_info where a_table = #{tableName} and a_alias = #{alias} limit 1;
+  </select>
+
+  <select id="getAliasByTable" resultType="java.lang.String">
+    select a_alias from agg_info where a_table = #{tableName};
+  </select>
+</mapper>

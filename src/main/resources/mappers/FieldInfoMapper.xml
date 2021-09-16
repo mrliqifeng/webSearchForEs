@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gy.cpcsearch.mapper.FieldInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.gy.cpcsearch.entity.FieldInfo" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="f_table_name" property="fTableName" jdbcType="VARCHAR" />
+    <result column="f_name" property="fName" jdbcType="VARCHAR" />
+    <result column="f_des" property="fDes" jdbcType="VARCHAR" />
+    <result column="f_field_type" property="fFieldType" jdbcType="INTEGER" />
+  </resultMap>
+  <insert id="insert" parameterType="com.gy.cpcsearch.entity.FieldInfo" >
+    insert into field_info (id, f_table_name, f_name,
+                            f_des, f_field_type)
+    values (#{id,jdbcType=VARCHAR}, #{fTableName,jdbcType=VARCHAR}, #{fName,jdbcType=VARCHAR},
+            #{fDes,jdbcType=VARCHAR}, #{fFieldType,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gy.cpcsearch.entity.FieldInfo" >
+    insert into field_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fTableName != null" >
+        f_table_name,
+      </if>
+      <if test="fName != null" >
+        f_name,
+      </if>
+      <if test="fDes != null" >
+        f_des,
+      </if>
+      <if test="fFieldType != null" >
+        f_field_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="fTableName != null" >
+        #{fTableName,jdbcType=VARCHAR},
+      </if>
+      <if test="fName != null" >
+        #{fName,jdbcType=VARCHAR},
+      </if>
+      <if test="fDes != null" >
+        #{fDes,jdbcType=VARCHAR},
+      </if>
+      <if test="fFieldType != null" >
+        #{fFieldType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="findFieldName" resultType="java.lang.String">
+    select f_name from field_info
+  </select>
+
+  <select id="findFieldNameByTable" resultType="java.lang.String">
+    select f_name from field_info where f_table_name = #{tableName}
+  </select>
+
+  <select id="findDesByFieldAndTable" resultType="java.lang.String">
+    select f_des from field_info where f_table_name = #{tableName} and f_name = #{fieldName} limit 1 ;
+  </select>
+
+  <resultMap id="tagInfoMap" type="java.util.Map" >
+    <result column="field_names" property="fieldNames" jdbcType="VARCHAR" />
+    <result column="f_table_name" property="tableName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getAllTagInfo" resultMap="tagInfoMap">
+    select GROUP_CONCAT(a.f_name) as field_names ,a.f_table_name  from field_info a left join table_info b on a.f_table_name = b.t_name where b.t_status = 1 group by a.f_table_name
+  </select>
+
+  <select id="findTagInfoByTableName" resultMap="tagInfoMap">
+    select GROUP_CONCAT(f_des,"-",f_name) as field_names,f_table_name  from field_info  where f_table_name = #{tableName} group by f_table_name
+  </select>
+</mapper>
